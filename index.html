@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Selection Code Analyzer by Hasan</title>
+<style>
+:root{--bg:#09101f;--panel:#10182a;--panel2:#141e33;--line:#263451;--text:#eef4ff;--muted:#9aa8c6;--accent:#7b91ff;--ok:#5ee0b7;--warn:#ffcc66}
+*{box-sizing:border-box}html,body{height:100%;margin:0}body{overflow:hidden;background:var(--bg);color:var(--text);font:14px/1.45 Inter,system-ui,-apple-system,Segoe UI,sans-serif}button,input,select,textarea{font:inherit}.app{height:100%;display:grid;grid-template-rows:auto auto 1fr}.top{display:flex;align-items:center;gap:10px;padding:11px 13px;background:#0d1527;border-bottom:1px solid var(--line)}.brand{font-weight:850;white-space:nowrap}.brand b{display:inline-grid;place-items:center;width:30px;height:30px;margin-right:8px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--ok));color:#08111f}.grow{flex:1}.btn{border:1px solid #344565;background:#22314d;color:#fff;border-radius:9px;padding:8px 11px;font-weight:750;cursor:pointer}.btn.primary{border-color:transparent;background:linear-gradient(135deg,var(--accent),#6978ff)}.btn.ok{background:#153b35;border-color:#286459;color:#c8fff0}.btn:disabled{opacity:.5;cursor:not-allowed}.grid{min-height:0;display:grid;grid-template-columns:minmax(310px,34%) minmax(410px,1fr) minmax(350px,34%);gap:1px;background:var(--line)}.pane{min-width:0;min-height:0;display:flex;flex-direction:column;background:var(--bg)}.head{height:47px;display:flex;align-items:center;gap:8px;padding:0 11px;background:var(--panel);border-bottom:1px solid var(--line)}.title{font-weight:800}.muted{color:var(--muted);font-size:12px}.badge{padding:3px 7px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:11px}.badge.ok{color:#bff6e7;border-color:#2e665e;background:#15352f}.badge.warn{color:#ffe2a1;border-color:#665531;background:#3a2f18}.source{flex:1;min-height:0;width:100%;resize:none;border:0;outline:0;background:#070d19;color:#dce7ff;padding:14px 15px;font:12.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;tab-size:2}.foot{display:grid;grid-template-columns:1fr auto;gap:8px;padding:8px 10px;border-top:1px solid var(--line);background:var(--panel)}.base{min-width:0;background:#0b1324;border:1px solid var(--line);color:#dce7ff;border-radius:8px;padding:7px 9px}.check{display:flex;align-items:center;gap:6px;color:var(--muted);white-space:nowrap;font-size:12px}.previewWrap{position:relative;flex:1;min-height:0;background:#fff}.preview{width:100%;height:100%;border:0;background:#fff}.tip{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:4;pointer-events:none;opacity:0;transition:.18s;padding:7px 10px;border-radius:999px;background:rgba(7,13,25,.88);color:white;font-size:12px;white-space:nowrap}.tip.show{opacity:1}.tabs{display:flex;gap:3px;padding:8px 9px 0;background:var(--panel);overflow:auto}.tab{border:0;background:transparent;color:var(--muted);padding:8px 10px;border-radius:8px 8px 0 0;font-weight:800;cursor:pointer}.tab.active{background:var(--panel2);color:#fff}.out{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--panel2)}.tools{display:flex;gap:8px;padding:9px;border-bottom:1px solid var(--line)}.tools input,.tools select{min-width:0;background:#0b1324;border:1px solid var(--line);color:#dce7ff;border-radius:8px;padding:7px 9px;outline:0}.tools input{flex:1}.meta{display:grid;gap:5px;padding:9px 11px;border-bottom:1px solid var(--line);background:#0f192c;font-size:12px}.row{display:flex;gap:8px;min-width:0}.path{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#bdc9e7;font-family:ui-monospace,monospace}.code{flex:1;min-height:0;margin:0;overflow:auto;padding:14px 15px;background:#070d19;color:#dce7ff;white-space:pre;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.empty{height:100%;display:grid;place-items:center;text-align:center;color:var(--muted);padding:30px}.empty b{display:block;color:#fff;font-size:16px;margin-bottom:5px}.statusline{display:flex;align-items:center;gap:7px}.dot{width:7px;height:7px;border-radius:50%;background:var(--warn)}.dot.ok{background:var(--ok)}
+.livebar{display:flex;align-items:center;gap:8px;padding:8px 13px;background:#0a1222;border-bottom:1px solid var(--line)}.livebar label{font-size:12px;font-weight:800;color:#cbd6ef;white-space:nowrap}.liveurl{flex:1;min-width:120px;background:#070d19;border:1px solid var(--line);color:#eef4ff;border-radius:9px;padding:8px 10px;outline:0}.liveurl:focus{border-color:#536ab1}.livehint{color:var(--muted);font-size:11px;white-space:nowrap}.btn.small{padding:7px 9px;font-size:12px}@media(max-width:900px){.livebar{flex-wrap:wrap}.livehint{width:100%}.liveurl{min-width:240px}}
+@media(max-width:1100px){body{overflow:auto}.app{height:auto}.grid{grid-template-columns:1fr 1fr}.pane{height:58vh;min-height:430px}.outputPane{grid-column:1/-1}.top{position:sticky;top:0;z-index:10}}@media(max-width:760px){.grid{display:flex;flex-direction:column}.pane{height:68vh}.top{flex-wrap:wrap}.foot{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="brand"><b>&lt;/&gt;</b>Selection Code Analyzer by Hasan</div>
+    <span class="badge" id="modeBadge">Source Analyzer</span><span class="grow"></span>
+    <button class="btn" id="demoBtn">Load demo</button>
+    <button class="btn primary" id="previewBtn">Analyze & Preview</button>
+  </div>
+  <div class="livebar">
+    <label for="liveUrl">Live URL</label>
+    <input class="liveurl" id="liveUrl" inputmode="url" placeholder="https://your-store.com/ — open a live page inside preview">
+    <button class="btn small" id="openLive">Open Live</button>
+    <button class="btn small" id="reloadLive" disabled>Reload</button>
+    <button class="btn small" id="liveHome" disabled>Home</button>
+    <button class="btn small" id="sourceMode">Source Preview</button>
+    <span class="livehint" id="liveHint">Live pages can browse links; extraction works in Source Analyzer mode.</span>
+  </div>
+
+  <div class="grid">
+    <section class="pane">
+      <div class="head"><span class="title">1. Source</span><span class="muted">paste full page HTML</span><span class="grow"></span><span class="badge" id="chars">0 chars</span></div>
+      <textarea class="source" id="source" spellcheck="false" placeholder="Paste complete page source here…"></textarea>
+      <div class="foot">
+        <input class="base" id="baseUrl" placeholder="Base URL (auto from canonical, or paste store URL)">
+        <label class="check"><input type="checkbox" id="runJs"> Run original page JS</label>
+      </div>
+    </section>
+
+    <section class="pane">
+      <div class="head"><span class="title">2. Preview & Select</span><span class="statusline muted"><span class="dot" id="readyDot"></span><span id="readyText">Not loaded</span></span><span class="grow"></span><button class="btn ok" id="pickerBtn">Picker: ON</button></div>
+      <div class="previewWrap">
+        <iframe class="preview" id="preview" sandbox="allow-scripts allow-forms allow-modals allow-popups"></iframe>
+        <div class="tip" id="tip">Click any element</div>
+      </div>
+    </section>
+
+    <section class="pane outputPane">
+      <div class="head"><span class="title">3. Extracted</span><span class="muted" id="selectedLabel">Nothing selected</span><span class="grow"></span><button class="btn" id="copyCurrent">Copy current</button><button class="btn primary" id="copyBundle">Copy bundle</button></div>
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-tab="html">HTML</button>
+        <button class="tab" data-tab="css">CSS <span class="badge" id="cssCount">0</span></button>
+        <button class="tab" data-tab="js">JS <span class="badge" id="jsCount">0</span></button>
+        <button class="tab" data-tab="bundle">Bundle</button>
+      </div>
+      <div class="out">
+        <div class="tools"><input id="filter" placeholder="Filter output…"><select id="sort"><option value="natural">Natural</option><option value="az">A–Z</option><option value="short">Shortest first</option></select></div>
+        <div class="meta" id="meta" hidden><div class="row"><b>Element</b><span class="path" id="metaEl"></span></div><div class="row"><b>Path</b><span class="path" id="metaPath"></span></div></div>
+        <pre class="code" id="code"><span class="empty"><span><b>No selection yet</b>Preview the page, then click the element you want.</span></span></pre>
+      </div>
+    </section>
+  </div>
+</div>
+<script>
+(()=>{
+  const $=s=>document.querySelector(s);
+  const source=$('#source'), frame=$('#preview'), baseUrl=$('#baseUrl'), runJs=$('#runJs'), code=$('#code'), tip=$('#tip');
+  const liveUrl=$('#liveUrl'), openLiveBtn=$('#openLive'), reloadLiveBtn=$('#reloadLive'), liveHomeBtn=$('#liveHome'), sourceModeBtn=$('#sourceMode');
+  const SOURCE_SANDBOX='allow-scripts allow-forms allow-modals allow-popups';
+  const LIVE_SANDBOX='allow-scripts allow-forms allow-modals allow-popups allow-same-origin allow-popups-to-escape-sandbox';
+  let picker=true, tab='html', readyTimer=null, mode='source', liveHomeUrl='';
+  let result={html:'',css:'',js:'',bundle:'',cssRules:0,jsBlocks:0,element:'',path:''};
+
+  const demo=`<!doctype html><html><head>
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'">
+<link rel="canonical" href="https://example.com/products/lamp">
+<style>
+:root{--brand:#6d5dfc}body{margin:0;padding:40px;background:#f3f5fb;font-family:Arial,sans-serif}.wrap{display:flex;gap:24px;align-items:flex-start}.card{width:320px;background:white;border-radius:18px;overflow:hidden;box-shadow:0 14px 40px rgba(20,30,55,.12)}.card img{width:100%;display:block}.content{padding:20px}.price{color:var(--brand);font-size:21px;font-weight:800}.buy{width:100%;margin-top:14px;border:0;border-radius:10px;padding:12px;background:var(--brand);color:white}.buy:hover{transform:translateY(-1px)}.unused{border:10px solid red;color:red}
+</style></head><body><div class="wrap"><article class="card" id="product-card"><img src="https://picsum.photos/640/380" alt="Lamp"><div class="content"><h2>Desk Lamp</h2><div class="price">$79</div><button class="buy" data-product-id="lamp-79">Add to cart</button></div></article><div class="unused" hidden>unused</div></div><script>const b=document.querySelector('.buy');b.addEventListener('click',()=>{b.textContent='Added'});function unusedFn(){console.log('unused')}<\/script></body></html>`;
+
+  function flash(msg,ms=1500){tip.textContent=msg;tip.classList.add('show');setTimeout(()=>{tip.classList.remove('show');tip.textContent='Click any element'},ms)}
+  function setReady(state,text){$('#readyDot').classList.toggle('ok',state==='ok');$('#readyText').textContent=text;$('#readyText').style.color=state==='bad'?'#ffd38a':''}
+  function validHttpUrl(value){try{const u=new URL(value);return /^https?:$/.test(u.protocol)?u:null}catch(e){return null}}
+  function setMode(next){mode=next;const live=mode==='live';$('#modeBadge').textContent=live?'Live Browser':'Source Analyzer';$('#modeBadge').classList.toggle('ok',!live);$('#modeBadge').classList.toggle('warn',live);reloadLiveBtn.disabled=!live;liveHomeBtn.disabled=!live||!liveHomeUrl;$('#pickerBtn').disabled=live;$('#pickerBtn').textContent=live?'Picker: N/A':'Picker: '+(picker?'ON':'OFF');$('#liveHint').textContent=live?'Live Browser: links navigate inside the preview. Cross-origin pages cannot be extracted by a standalone HTML file.':'Source Analyzer: click elements to extract HTML/CSS/JS. Links open in Live Browser.'}
+  function openLive(value,{home=false}={}){let raw=(value||'').trim();if(!raw)return flash('Paste a live URL first');if(!/^https?:\/\//i.test(raw))raw='https://'+raw;const u=validHttpUrl(raw);if(!u)return flash('Use a valid http(s) URL');liveUrl.value=u.href;if(home||!liveHomeUrl)liveHomeUrl=u.href;setMode('live');frame.removeAttribute('srcdoc');frame.setAttribute('sandbox',LIVE_SANDBOX);setReady('wait','Loading live page…');$('#readyDot').classList.remove('ok');frame.src=u.href;flash('Live Browser opened — page links will navigate here',1800)}
+  function openSource(){analyze()}
+
+  function detectBase(raw){
+    const manual=baseUrl.value.trim(); if(manual) return normalizeBase(manual);
+    try{
+      const d=new DOMParser().parseFromString(raw,'text/html');
+      const existing=d.querySelector('base[href]')?.getAttribute('href');
+      const canonical=d.querySelector('link[rel~="canonical"][href]')?.getAttribute('href');
+      const og=d.querySelector('meta[property="og:url"][content]')?.getAttribute('content');
+      const candidate=existing||canonical||og||'';
+      return candidate?normalizeBase(candidate):'';
+    }catch(e){return ''}
+  }
+  function normalizeBase(u){
+    try{if(u.startsWith('//'))u='https:'+u;const x=new URL(u);return x.origin+'/'}catch(e){return u}
+  }
+
+  function inspectorScript(){
+    return `<script data-selection-analyzer="1">\n(function(){\n`+
+`const KEY='__selectionAnalyzerV2';\n`+
+`const listeners=new WeakMap();const nativeAdd=EventTarget.prototype.addEventListener;\n`+
+`EventTarget.prototype.addEventListener=function(type,fn,opt){try{let a=listeners.get(this);if(!a){a=[];listeners.set(this,a)}a.push({type:type,fn:fn})}catch(e){}return nativeAdd.call(this,type,fn,opt)};\n`+
+`window[KEY]={picker:true,listeners:listeners,box:null};\n`+
+`function esc(v){try{return CSS.escape(v)}catch(e){return String(v).replace(/[^a-zA-Z0-9_-]/g,'\\\\$&')}}\n`+
+`function path(el){if(!el||el.nodeType!==1)return '';const out=[];while(el&&el.nodeType===1&&el!==document.documentElement){let p=el.tagName.toLowerCase();if(el.id){p+='#'+esc(el.id);out.unshift(p);break}const c=[...el.classList].slice(0,2).map(x=>'.'+esc(x)).join('');if(c)p+=c;const par=el.parentElement;if(par){const same=[...par.children].filter(x=>x.tagName===el.tagName);if(same.length>1)p+=':nth-of-type('+(same.indexOf(el)+1)+')'}out.unshift(p);el=par}return out.join(' > ')}\n`+
+`function cleanSel(s){return s.replace(/::[a-zA-Z-]+(?:\\([^)]*\\))?/g,'').replace(/:(hover|focus|focus-visible|focus-within|active|visited|link|checked|disabled|enabled|target)(?![\\w-])/g,'').trim()}\n`+
+`function hits(sel,root){for(const part of sel.split(',')){const s=cleanSel(part.trim());if(!s)continue;try{if(root.matches(s)||root.querySelector(s))return true}catch(e){}}return false}\n`+
+`function ancestorHits(sel,root){let p=root.parentElement;while(p){for(const part of sel.split(',')){const s=cleanSel(part.trim());if(!s)continue;try{if(p.matches(s))return true}catch(e){}}p=p.parentElement}return false}\n`+
+`function collectCss(root){const matched=[],vars=new Set(),varRules=[],keyWanted=new Set(),keyframes=[];function inspect(st){for(const prop of st){const v=st.getPropertyValue(prop)||'';for(const m of v.matchAll(/var\\((--[\\w-]+)/g))vars.add(m[1]);if(prop==='animation-name')v.split(',').forEach(x=>{x=x.trim();if(x&&x!=='none')keyWanted.add(x)})}}function walk(rules){const out=[];for(const r of [...rules]){try{if(r.type===CSSRule.STYLE_RULE){if(hits(r.selectorText,root)){inspect(r.style);out.push(r.cssText)}else if(ancestorHits(r.selectorText,root)){const keep=['color','font','font-family','font-size','font-style','font-weight','line-height','letter-spacing','text-align','text-transform','visibility','cursor','direction'];const ds=[];for(const p of r.style){if(keep.includes(p))ds.push(p+': '+r.style.getPropertyValue(p)+(r.style.getPropertyPriority(p)?' !important':'')+';');if(p.startsWith('--'))varRules.push(r)}if(ds.length)out.push('/* inherited */\\n'+r.selectorText+' { '+ds.join(' ')+' }')}if(/(^|,)\\s*:root\\b|(^|,)\\s*html\\b/.test(r.selectorText))varRules.push(r)}else if(r.type===CSSRule.MEDIA_RULE){const i=walk(r.cssRules);if(i.length)out.push('@media '+r.conditionText+' {\\n'+i.join('\\n\\n')+'\\n}')}else if(r.type===CSSRule.SUPPORTS_RULE){const i=walk(r.cssRules);if(i.length)out.push('@supports '+r.conditionText+' {\\n'+i.join('\\n\\n')+'\\n}')}else if(r.type===CSSRule.KEYFRAMES_RULE){keyframes.push(r)}}catch(e){}}return out}for(const sh of [...document.styleSheets]){try{matched.push(...walk(sh.cssRules))}catch(e){}}const defs=[];for(const r of [...new Set(varRules)]){const ds=[];for(const v of vars){const val=r.style.getPropertyValue(v);if(val)ds.push(v+': '+val.trim()+';')}if(ds.length)defs.push(r.selectorText+' { '+ds.join(' ')+' }')}const k=keyframes.filter(x=>keyWanted.has(x.name)).map(x=>x.cssText);const uniq=[...new Set([...defs,...matched,...k])];return {text:uniq.join('\\n\\n'),count:uniq.length}}\n`+
+`function jsBlocks(root){const out=[],tokens=new Set();function tok(el){if(el.id)tokens.add(el.id);el.classList&&el.classList.forEach(x=>tokens.add(x));for(const a of ['data-product-id','data-id','name','aria-controls']){const v=el.getAttribute&&el.getAttribute(a);if(v)tokens.add(v)}}for(const el of [root,...root.querySelectorAll('*')]){tok(el);for(const a of [...el.attributes])if(/^on/i.test(a.name)&&a.value.trim())out.push('// '+a.name+' on '+path(el)+'\\n'+a.value.trim());const ls=listeners.get(el)||[];for(const it of ls){try{out.push('// '+it.type+' listener on '+path(el)+'\\n'+(it.fn?.toString?.()||String(it.fn)))}catch(e){}}}for(const sc of document.querySelectorAll('script:not([data-selection-analyzer])')){const t=sc.textContent||'';if(!t.trim())continue;const lines=t.split('\\n'),hit=[];lines.forEach((line,i)=>{for(const token of tokens){if(token&&token.length>1&&line.includes(token)){hit.push(i);break}}});const ranges=[];for(const i of hit){const a=Math.max(0,i-5),b=Math.min(lines.length-1,i+8),last=ranges[ranges.length-1];if(last&&a<=last[1]+1)last[1]=Math.max(last[1],b);else ranges.push([a,b])}for(const [a,b] of ranges)out.push('// related source lines '+(a+1)+'-'+(b+1)+'\\n'+lines.slice(a,b+1).join('\\n').trim())}return [...new Set(out)]}\n`+
+`function overlay(){let b=window[KEY].box;if(!b){b=document.createElement('div');b.setAttribute('data-selection-analyzer-box','1');b.style.cssText='position:fixed;z-index:2147483647;pointer-events:none;border:2px solid #7b91ff;background:rgba(123,145,255,.08);box-shadow:0 0 0 1px rgba(255,255,255,.7) inset;display:none';document.documentElement.appendChild(b);window[KEY].box=b}return b}\n`+
+`function pointTarget(e){const p=e.composedPath?e.composedPath():[];return p.find(x=>x&&x.nodeType===1)||e.target}\n`+
+`function move(e){if(!window[KEY].picker)return;const el=pointTarget(e);if(!el||el.hasAttribute?.('data-selection-analyzer-box'))return;const r=el.getBoundingClientRect(),b=overlay();b.style.display='block';b.style.left=r.left+'px';b.style.top=r.top+'px';b.style.width=r.width+'px';b.style.height=r.height+'px'}\n`+
+`function select(e){if(!window[KEY].picker)return;const el=pointTarget(e);if(!el||el.hasAttribute?.('data-selection-analyzer-box'))return;const anchor=el.closest?.('a[href]');if(anchor&&!e.shiftKey){const href=anchor.href||anchor.getAttribute('href');if(href&&!href.startsWith('javascript:')&&!href.startsWith('#')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();parent.postMessage({type:'selection-analyzer:navigate',href:href},'*');return}}e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();const css=collectCss(el),js=jsBlocks(el);parent.postMessage({type:'selection-analyzer:selected',payload:{html:el.outerHTML,css:css.text,cssRules:css.count,js:js.join('\\n\\n'),jsBlocks:js.length,element:el.tagName.toLowerCase()+(el.id?'#'+el.id:'')+[...el.classList].map(x=>'.'+x).join(''),path:path(el)}},'*')}\n`+
+`window.addEventListener('pointermove',move,true);window.addEventListener('pointerdown',select,true);window.addEventListener('click',function(e){if(window[KEY].picker){e.preventDefault();e.stopImmediatePropagation()}},true);\n`+
+`window.addEventListener('message',e=>{if(e.data&&e.data.type==='selection-analyzer:picker'){window[KEY].picker=!!e.data.value;const b=window[KEY].box;if(b&&!window[KEY].picker)b.style.display='none'}});\n`+
+`parent.postMessage({type:'selection-analyzer:ready'},'*');\n`+
+`})();\n<\/script>`;
+  }
+
+  function prepare(raw){
+    const d=new DOMParser().parseFromString(raw,'text/html');
+    // CSP and refresh are common reasons injected inspection/preview code fails.
+    d.querySelectorAll('meta[http-equiv]').forEach(m=>{const v=(m.getAttribute('http-equiv')||'').toLowerCase();if(v==='content-security-policy'||v==='content-security-policy-report-only'||v==='refresh')m.remove()});
+    let detected=detectBase(raw);
+    if(detected){baseUrl.value=detected;d.querySelectorAll('base').forEach(x=>x.remove());const b=d.createElement('base');b.href=detected;d.head.prepend(b)}
+    // A file:// parent makes protocol-relative Shopify CDN URLs resolve incorrectly without a web base.
+    if(!detected){for(const el of d.querySelectorAll('[src],[href]')){for(const a of ['src','href']){const v=el.getAttribute(a);if(v&&v.startsWith('//'))el.setAttribute(a,'https:'+v)}}}
+    if(!runJs.checked){
+      for(const s of [...d.querySelectorAll('script')]){
+        const clone=d.createElement('script');
+        for(const a of [...s.attributes])clone.setAttribute(a.name,a.value);
+        clone.setAttribute('data-original-type',s.getAttribute('type')||'text/javascript');
+        clone.type='text/plain'; clone.textContent=s.textContent||''; s.replaceWith(clone);
+      }
+    }
+    d.head.insertAdjacentHTML('afterbegin',inspectorScript());
+    return '<!doctype html>\n'+d.documentElement.outerHTML;
+  }
+
+  function analyze(){
+    const raw=source.value.trim(); if(!raw){source.focus();flash('Paste source first');return}
+    mode='source';frame.setAttribute('sandbox',SOURCE_SANDBOX);frame.removeAttribute('src');setMode('source');
+    setReady('wait','Loading…'); $('#readyDot').classList.remove('ok');
+    result={html:'',css:'',js:'',bundle:'',cssRules:0,jsBlocks:0,element:'',path:''}; $('#selectedLabel').textContent='Click an element'; $('#meta').hidden=true; render();
+    frame.srcdoc=prepare(raw);
+    clearTimeout(readyTimer); readyTimer=setTimeout(()=>{if($('#readyText').textContent==='Loading…')setReady('bad','Inspector blocked / page issue')},1800);
+    flash('Preview loaded — click an element',1800);
+  }
+
+  function bundle(r){return ['<!-- Selected HTML -->',r.html.trim(),r.css.trim()?`\n<style>\n${r.css.trim()}\n</style>`:'',r.js.trim()?`\n<script>\n${r.js.trim()}\n<\/script>`:''].filter(Boolean).join('\n')}
+  function current(){return result[tab]||''}
+  function filtered(text){let lines=text.split('\n'),q=$('#filter').value.trim().toLowerCase();if(q)lines=lines.filter(x=>x.toLowerCase().includes(q));if($('#sort').value==='az')lines.sort((a,b)=>a.localeCompare(b));if($('#sort').value==='short')lines.sort((a,b)=>a.length-b.length);return lines.join('\n')}
+  function render(){$('#cssCount').textContent=result.cssRules||0;$('#jsCount').textContent=result.jsBlocks||0;if(!result.html){code.innerHTML='<span class="empty"><span><b>No selection yet</b>Preview the page, then click the element you want.</span></span>';return}code.textContent=filtered(current())}
+  async function copyText(text,label){if(!text)return flash('Nothing to copy');try{await navigator.clipboard.writeText(text)}catch(e){const t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}flash(label||'Copied')}
+
+  window.addEventListener('message',e=>{
+    if(!e.data||typeof e.data!=='object')return;
+    if(e.data.type==='selection-analyzer:ready'){if(mode!=='source')return;clearTimeout(readyTimer);setReady('ok','Picker ready');frame.contentWindow?.postMessage({type:'selection-analyzer:picker',value:picker},'*');return}
+    if(e.data.type==='selection-analyzer:navigate'){const href=e.data.href||'';if(validHttpUrl(href)){openLive(href,{home:!liveHomeUrl})}else flash('This link cannot be opened in Live Browser');return}
+    if(e.data.type==='selection-analyzer:selected'){if(mode!=='source')return;
+      const p=e.data.payload||{};result={...p,bundle:''};result.bundle=bundle(result);$('#selectedLabel').textContent=p.element||'Selected';$('#meta').hidden=false;$('#metaEl').textContent=p.element||'';$('#metaPath').textContent=p.path||'';render();flash('Selected: '+(p.element||'element'));
+    }
+  });
+
+  frame.addEventListener('load',()=>{if(mode==='live'){setReady('ok','Live page loaded');$('#selectedLabel').textContent='Live browsing mode'}});
+  openLiveBtn.addEventListener('click',()=>openLive(liveUrl.value,{home:true}));
+  reloadLiveBtn.addEventListener('click',()=>{if(mode==='live'&&liveUrl.value)openLive(liveUrl.value)});
+  liveHomeBtn.addEventListener('click',()=>{if(liveHomeUrl){liveUrl.value=liveHomeUrl;openLive(liveHomeUrl)}});
+  sourceModeBtn.addEventListener('click',openSource);
+  liveUrl.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();openLive(liveUrl.value,{home:true})}});
+  $('#previewBtn').addEventListener('click',analyze);$('#demoBtn').addEventListener('click',()=>{source.value=demo;baseUrl.value='';source.dispatchEvent(new Event('input'));analyze()});
+  $('#pickerBtn').addEventListener('click',()=>{picker=!picker;$('#pickerBtn').textContent='Picker: '+(picker?'ON':'OFF');frame.contentWindow?.postMessage({type:'selection-analyzer:picker',value:picker},'*')});
+  $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;tab=b.dataset.tab;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));render()});
+  $('#copyCurrent').addEventListener('click',()=>copyText(current(),'Copied '+tab.toUpperCase()));$('#copyBundle').addEventListener('click',()=>copyText(result.bundle,'Copied bundle'));
+  source.addEventListener('input',()=>$('#chars').textContent=source.value.length.toLocaleString()+' chars');source.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();analyze()}});$('#filter').addEventListener('input',render);$('#sort').addEventListener('change',render);
+  setMode('source');
+})();
+</script>
+</body></html>
